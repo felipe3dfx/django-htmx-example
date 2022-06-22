@@ -1,0 +1,16 @@
+strictness: high
+test-warnings: true
+doc-warnings: false
+autodetect: true
+member-warnings: false
+max-line-length: 100
+
+ignore-paths:
+  - __init__.py
+  - app/test_settings.py
+  - app/local_settings.py
+  - static/
+  - node_modules/
+
+uses:
+  - django

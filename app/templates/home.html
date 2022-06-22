@@ -1,0 +1,60 @@
+{% extends 'layout/base.html' %}
+{% load static widget_tweaks %}
+
+{% block extra_head %}
+<style>
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+@media (min-width: 768px) {
+    .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container py-5">
+    <h1>Django and Htmx</h1>
+
+    <form method="post" action="{% url 'card_form' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.title.auto_id }}" class="form-label">{{ form.title.label }}</label>
+            {% render_field form.title class+="form-control" %}
+            {{ form.title.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.image.auto_id }}" class="form-label">{{ form.image.label }}</label>
+            {% render_field form.image class+="form-control" %}
+            {{ form.image.errors }}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.description.auto_id }}" class="form-label">{{ form.description.label }}</label>
+            {% render_field form.description class+="form-control" %}
+            {{ form.description.errors }}
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <hr class="my-5">
+    <div class="row" data-masonry='{"percentPosition": true }'>
+        {% for card in cards %}
+        {% include 'layout/_card.html' with card=card %}
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}
+
+{% block js %}
+<script async src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+    integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D"
+    crossorigin="anonymous"></script>
+<script src="https://unpkg.com/htmx.org@1.7.0"></script>
+{% endblock %}
