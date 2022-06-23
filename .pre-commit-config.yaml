@@ -43,16 +43,3 @@ repos:
   hooks:
     - id: isort
       stages: [commit]
-
-- repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v0.931
-  hooks:
-  - id: mypy
-    additional_dependencies: [
-      django-stubs,
-      types-freezegun,
-      types-python-dateutil,
-      types-pytz,
-      types-requests,
-    ]
-    stages: [commit]

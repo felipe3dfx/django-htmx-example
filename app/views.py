@@ -1,8 +1,9 @@
-from django.shortcuts import redirect
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from django.views import generic
 
-from .models import Card
 from .forms import CardForm
+from .models import Card
 
 
 class HomeView(generic.TemplateView):
@@ -22,5 +23,11 @@ class CardCreateView(generic.CreateView):
     form_class = CardForm
 
     def form_valid(self, form):
-        form.save()
+        card = form.save()
+
+        if self.request.headers.get('HX-Request'):
+            return render(self.request, 'layout/_card.html', {'card': card})
         return redirect('home')
+
+    def form_invalid(self, form):
+        return JsonResponse({'errors': form.errors.as_text()}, status=400)

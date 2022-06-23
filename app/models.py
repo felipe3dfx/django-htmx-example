@@ -14,6 +14,6 @@ class Card(models.Model):
         return f'{self.title}'
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['id']
         verbose_name = 'card'
         verbose_name_plural = 'cards'

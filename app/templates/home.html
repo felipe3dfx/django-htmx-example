@@ -23,12 +23,19 @@
 <main class="container py-5">
     <h1>Django and Htmx</h1>
 
-    <form method="post" action="{% url 'card_form' %}" enctype="multipart/form-data">
+    <form
+        hx-post="{% url 'card_form' %}"
+        hx-encoding="multipart/form-data"
+        hx-target="#card-container > div:last-child"
+        hx-swap="afterend"
+        _="on htmx:afterOnLoad reset() me then on htmx:responseError call setErrors(detail.xhr.response as Object)"
+    >
         {% csrf_token %}
         <div class="mb-3">
             <label for="{{ form.title.auto_id }}" class="form-label">{{ form.title.label }}</label>
             {% render_field form.title class+="form-control" %}
             {{ form.title.errors }}
+
         </div>
         <div class="mb-3">
             <label for="{{ form.image.auto_id }}" class="form-label">{{ form.image.label }}</label>
@@ -44,7 +51,7 @@
     </form>
 
     <hr class="my-5">
-    <div class="row" data-masonry='{"percentPosition": true }'>
+    <div id="card-container" class="row" data-masonry='{"percentPosition": true }' _="on htmx:load log detail.elt then log me then call addCard(detail.elt)">
         {% for card in cards %}
         {% include 'layout/_card.html' with card=card %}
         {% endfor %}
@@ -53,8 +60,20 @@
 {% endblock %}
 
 {% block js %}
-<script async src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
-    integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D"
-    crossorigin="anonymous"></script>
+<script async src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"></script>
+<script>
+    function addCard(element) {
+        Masonry.data('#card-container').appended(element);
+    };
+
+    function setErrors(response) {
+        let elem = document.createElement('div');
+        elem.innerText = response.errors;
+
+        var form = document.querySelector('form');
+        form.appendChild(elem);
+    };
+</script>
 <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+<script src="https://unpkg.com/hyperscript.org@0.9.5"></script>
 {% endblock %}

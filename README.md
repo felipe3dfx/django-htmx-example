@@ -1,6 +1,4 @@
-#  Elemento 4k website
-
-Django and Htmx example
+#  Django and Htmx example
 
 Use Python 3.10 to set up and run with these commands:
 
