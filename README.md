@@ -13,3 +13,5 @@ Use Python 3.10 to set up and run with these commands:
 Open it at http://localhost:8000/ .
 
 https://www.loom.com/share/07be69e9447e498cae50c9f0359b328e
+
+https://www.beautiful.ai/player/-N5GklwTzkitFA01CObA
